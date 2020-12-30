@@ -14,7 +14,6 @@ import {ForecastListType, ForecastResponseDataType, WeatherResponseDataType} fro
 
 const useMainPageStyles = makeStyles((theme) => ({
     mainField: {
-        // backgroundColor: '#7EF9FF',
         widht: '800px',
     },
     title: {
@@ -42,8 +41,15 @@ const useMainPageStyles = makeStyles((theme) => ({
         padding: 10,
         margin: 10,
         marginTop: 30,
-        backgroundColor: 'white',
+        backgroundColor: 'Aquamarine',
+        fontWeight: 'bold',
+        fontSize: '16px',
+        textAlign: 'center',
+        borderRadius: 10,
     },
+    temp: {
+        fontSize: 20,
+    }
 
 }));
 
@@ -52,11 +58,21 @@ export const HomePage = () => {
     const classes = useMainPageStyles();
 
     const [searchValue, SetSearchValue] = useState<string>('')
+    const [direction, setDirection] = useState<string>('')
+
+    const dataArray = useSelector<AppStateType, WeatherResponseDataType>(state => state.searchWeatherPage?.dataArray)
+    const forecastData = useSelector<AppStateType, ForecastResponseDataType>(state => state.searchWeatherPage.forecastData);
 
     const dispatch = useDispatch();
 
 
-    const dataArray = useSelector<AppStateType, WeatherResponseDataType>(state => state.searchWeatherPage?.dataArray)
+    useEffect(() => {
+        let windDegree = dataArray.wind?.deg;
+        if (windDegree) {
+            const dir = checkDirection(windDegree)
+            setDirection(dir)
+        }
+    }, [dataArray.wind])
 
     const currentTemperature = Math.round(dataArray.main?.temp);
 
@@ -66,42 +82,11 @@ export const HomePage = () => {
 
     const windSpeed = Math.round(10 * dataArray.wind?.speed) / 10;
 
-    const forecastData = useSelector<AppStateType, ForecastResponseDataType>(state => state.searchWeatherPage.forecastData);
 
-    const filteredForecastData = forecastData.list?.filter((data:ForecastListType) => data.dt_txt.slice(-8) === '12:00:00')
-        // .map((data: ForecastListType) => {
-        //     <Grid item xs={2} className={classes.forecastTableItem} key={data.dt}>{data?.main.temp}</Grid>
-        // })
+    const filteredForecastData = forecastData.list?.filter((data: ForecastListType) => data.dt_txt.slice(-8) === '12:00:00')
 
 
-   const forecastDataMap = filteredForecastData?.map((data: ForecastListType) => {
-        <Grid item xs={2} className={classes.forecastTableItem} key={data.dt} >{data?.main.temp}</Grid>
-   })
-
-    console.log(filteredForecastData)
-    console.log(forecastDataMap)
-
-    // useEffect(() => {
-    //     if( filteredForecastData) {
-    //         const forecastDataMap = filteredForecastData?.map((data: ForecastListType) => {
-    //             <Grid item xs={2} className={classes.forecastTableItem} key={data.dt} >{data?.main.temp}</Grid>
-    //         })
-    //     }
-    //
-    // }, [forecastData.list])
-
-
-
-    const [direction, setDirection] = useState<string>('')
-
-    useEffect(() => {
-        let windDegree = dataArray.wind?.deg;
-        if (windDegree) {
-            const dir = checkDirection(windDegree)
-            setDirection(dir)
-        }
-    }, [dataArray.wind])
-    const checkDirection = (windDegree: number) => {
+    const checkDirection = (windDegree: number): string => {
         if (windDegree >= 12 || windDegree <= 33) {
             return 'North-Northeast'
         }
@@ -162,44 +147,52 @@ export const HomePage = () => {
     const searchGeolocation = () => {
         navigator.geolocation.getCurrentPosition(function (position) {
             dispatch(searchWeatherDataGeolocationThunk(position.coords.latitude, position.coords.longitude))
+            //  dispatch(searchWeaklyForecastThunk(searchValue))
         });
     }
 
+    const forecastDataMap = filteredForecastData?.map((data: ForecastListType) => {
+        return <Grid item xs={2} className={classes.forecastTableItem} key={data.dt}>
+            Temperature on {data.dt_txt.slice(0, 10)}
+            <div>at 12.00 p.m.:</div>
+            <div className={classes.temp}> {`${Math.round(10 * data.main.temp) / 10} °C`}  </div>
+        </Grid>
+    })
+
     return (
         <>
-        <Grid container
-              direction="column"
-              alignItems="center"
-              spacing={3}
-              className={classes.mainField}
-        >
-            <Grid item xs={3} className={classes.title}>
-                My Weather API
-            </Grid>
-            <Grid item xs={2}>
-                <SearchInput searchValue={searchValue} SetSearchValue={SetSearchValue} dispatchThunk={dispatchThunk}
-                             searchGeolocation={searchGeolocation}/>
-            </Grid>
-            <Grid item xs={4}>
-                <Grid container direction={'column'} className={classes.detailDayWeather}>
-                    <Grid className={classes.temperatureData}
-                          item> Temperature: {currentTemperature == 0 ? '0°C' : !currentTemperature ? '' : `${currentTemperature}°C`}</Grid>
-                    <Grid item> Pressure: {`${!pressure ? '' : `${pressure} hpa`}`}</Grid>
-                    <Grid item>Humidity: {`${!humidity ? '' : `${humidity} %`}`}</Grid>
-                    <Grid item>Wind speed: {`${!windSpeed ? '' : `${windSpeed} m/s`}`} </Grid>
-                    <Grid item>Wind direction: {direction} </Grid>
+            <Grid container direction="column" alignItems="center" spacing={3} className={classes.mainField}>
+                <Grid item xs={3} className={classes.title}>
+                    My Weather API
+                </Grid>
+                <Grid item xs={2}>
+                    <SearchInput searchValue={searchValue} SetSearchValue={SetSearchValue} dispatchThunk={dispatchThunk}
+                                 searchGeolocation={searchGeolocation}/>
+                </Grid>
+                <Grid item xs={4}>
+                    <Grid container direction={'column'} className={classes.detailDayWeather}>
+                        <Grid className={classes.temperatureData}
+                              item> Temperature:
+                            {
+                                currentTemperature == 0
+                                ? '0°C'
+                                : !currentTemperature
+                                    ? ''
+                                    : `${currentTemperature}°C`
+                            }
+                        </Grid>
+                        <Grid item> Pressure: {`${!pressure ? '' : `${pressure} hpa`}`}</Grid>
+                        <Grid item>Humidity: {`${!humidity ? '' : `${humidity} %`}`}</Grid>
+                        <Grid item>Wind speed: {`${!windSpeed ? '' : `${windSpeed} m/s`}`} </Grid>
+                        <Grid item>Wind direction: {direction} </Grid>
+                    </Grid>
                 </Grid>
             </Grid>
-        </Grid>
 
-                <Grid container direction={'row'} xs={10} className={classes.forecastTable} >
-                    {/*<Grid item xs={2} className={classes.forecastTableItem}>Item 1</Grid>*/}
-                    {/*<Grid item xs={2} className={classes.forecastTableItem}>Item 1</Grid>*/}
-                    {/*<Grid item xs={2} className={classes.forecastTableItem}>Item 1</Grid>*/}
-                    {/*<Grid item xs={2} className={classes.forecastTableItem}>Item 1</Grid>*/}
-                    {/*<Grid item xs={2} className={classes.forecastTableItem}>Item 1</Grid>*/}
-                    {filteredForecastData && filteredForecastData}
-                </Grid>
+            <Grid container direction={'row'} xs={10} className={classes.forecastTable}>
+                {forecastDataMap}
+
+            </Grid>
         </>
 
     )

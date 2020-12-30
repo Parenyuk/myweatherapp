@@ -2,7 +2,7 @@ import {Container, makeStyles, Typography} from '@material-ui/core';
 import React from 'react';
 import {Link, Route, Switch} from 'react-router-dom';
 import {HomePage} from './components/HomePage';
-import {WeaklyForecast} from './components/Weeklyforecast';
+import {ArraySelectedCity} from './components/ArraySelectedCity';
 
 
 const useMainFieldStyles = makeStyles((theme) => ({
@@ -18,11 +18,10 @@ function App() {
     const classes = useMainFieldStyles();
 
     return (
-        <>
-            <Container className={classes.App}>
-                <HomePage/>
-            </Container>
-        </>
+        <Container className={classes.App}>
+            <HomePage/>
+            <ArraySelectedCity/>
+        </Container>
     );
 }
 

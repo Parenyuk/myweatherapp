@@ -5,16 +5,17 @@ const instance = axios.create({
     baseURL: 'https://api.openweathermap.org/data/2.5/'
 })
 
-const apiKey = '56d2e4b5dd3e4cbde0947dae77ea7da0';
-
 export const weatherApi = {
     setSearchCityWeather(searchValue: string) {
-        return instance.get<WeatherResponseDataType>(`weather?q=${searchValue}&appid=${apiKey}&units=metric`)
+        debugger
+        let a  =  process.env.REACT_APP_API_KEY;
+
+        return instance.get<WeatherResponseDataType>(`weather?q=${searchValue}&appid=${process.env.REACT_APP_API_KEY}&units=metric`)
     },
     setSearchCityWeatherByGeolocation(latitude: number, longitude: number) {
-        return instance.get<WeatherResponseDataType>(`weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`)
+        return instance.get<WeatherResponseDataType>(`weather?lat=${latitude}&lon=${longitude}&appid=${process.env.REACT_APP_API_KEY}&units=metric`)
     },
     setSearchWeaklyForecast(searchValue: string) {
-        return instance.get<ForecastResponseDataType>(`forecast?q=${searchValue}&appid=${apiKey}&units=metric`)
+        return instance.get<ForecastResponseDataType>(`forecast?q=${searchValue}&appid=${process.env.REACT_APP_API_KEY}&units=metric`)
     }
 }

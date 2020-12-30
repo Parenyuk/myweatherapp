@@ -28,6 +28,7 @@ export const SearchInput = ({searchValue, SetSearchValue, dispatchThunk, searchG
 
     const changeSearchValue = (e: ChangeEvent<HTMLInputElement>) => {
         SetSearchValue(e.currentTarget.value)
+
     }
 
     return (

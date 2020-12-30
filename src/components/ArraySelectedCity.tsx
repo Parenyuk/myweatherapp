@@ -1,9 +1,10 @@
 import React from 'react';
 
-export const WeaklyForecast = () => {
+export const ArraySelectedCity = () => {
     return (
         <div>
-            WeaklyForecast
+            ArraySelectedCity
         </div>
     )
-}
+};
+
