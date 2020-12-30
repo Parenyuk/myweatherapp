@@ -38,7 +38,7 @@ const actions = {
     },
 }
 
-export const searchInputThunk = (searchValue: string): ThunkType => async (dispatch: ThunkDispatch<AppStateType, unknown, ActionType>) => {
+export const searchInputTC = (searchValue: string): ThunkType => async (dispatch: ThunkDispatch<AppStateType, unknown, ActionType>) => {
     try {
         const response = await weatherApi.setSearchCityWeather(searchValue)
         dispatch(actions.setSearchInput(response.data))
@@ -47,23 +47,23 @@ export const searchInputThunk = (searchValue: string): ThunkType => async (dispa
     }
 }
 
-export const searchWeatherDataGeolocationThunk = (latitude: number, longitude: number): ThunkType => async (dispatch: ThunkDispatch<AppStateType, unknown, ActionType>, getState: () => AppStateType) => {
+export const searchWeatherDataGeolocationTC = (latitude: number, longitude: number): ThunkType => async (dispatch: ThunkDispatch<AppStateType, unknown, ActionType>) => {
     try {
         const response = await weatherApi.setSearchCityWeatherByGeolocation(latitude, longitude)
         // debugger
         dispatch(actions.setSearchInput(response.data))
     } catch (e) {
-
+        throw new Error(e)
     }
 }
 
-export const searchWeaklyForecastThunk = (searchValue: string): ThunkType => async (dispatch: ThunkDispatch<AppStateType, unknown, ActionType>, getState: () => AppStateType) => {
+export const searchWeaklyForecastTC = (searchValue: string): ThunkType => async (dispatch: ThunkDispatch<AppStateType, unknown, ActionType>) => {
     try {
         const response = await weatherApi.setSearchWeaklyForecast(searchValue)
         debugger
 
         dispatch(actions.setSearchWeaklyForecast(response.data))
     } catch (e) {
-
+        throw new Error(e)
     }
 }

@@ -1,5 +1,5 @@
 import React, {ChangeEvent} from 'react';
-import {Button, Grid, Input, makeStyles, Paper, Typography} from '@material-ui/core';
+import {Button, Grid, Input, makeStyles, Paper, PropTypes, Typography} from '@material-ui/core';
 
 const useSearchInputStyles = makeStyles((theme) => ({
     input: {
@@ -22,7 +22,7 @@ type PropsType = {
     searchGeolocation: () => void
 }
 
-export const SearchInput = ({searchValue, SetSearchValue, dispatchThunk, searchGeolocation}: PropsType) => {
+export const SearchInput: React.FC<PropsType> = ({searchValue, SetSearchValue, dispatchThunk, searchGeolocation}) => {
 
     const classes = useSearchInputStyles();
 
@@ -32,12 +32,12 @@ export const SearchInput = ({searchValue, SetSearchValue, dispatchThunk, searchG
     }
 
     return (
-        <Typography >
+        <>
             <Input className={classes.input} placeholder={"Enter a city"} color={'secondary'} onChange={changeSearchValue} />
             <Grid container>
                 <Grid item xs={6}> <Button className={classes.button} color={'secondary'} variant={'contained'} onClick={dispatchThunk} >Search by city</Button></Grid>
-                <Grid item xs={6}>  <Button className={classes.button} onClick={searchGeolocation} variant="contained" color={'secondary'} >Search by geolocation</Button></Grid>
+                <Grid  item xs={6}>  <Button className={classes.button} onClick={searchGeolocation} variant="contained" color={'secondary'} >Search by geolocation</Button></Grid>
             </Grid>
-        </Typography>
+        </>
     )
 }

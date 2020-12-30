@@ -6,7 +6,7 @@ import {ArraySelectedCity} from './components/ArraySelectedCity';
 
 
 const useMainFieldStyles = makeStyles((theme) => ({
-    App: {
+    app: {
         backgroundColor: '#73C2FB',
         height: '100vh',
     },
@@ -18,7 +18,7 @@ function App() {
     const classes = useMainFieldStyles();
 
     return (
-        <Container className={classes.App}>
+        <Container className={classes.app}>
             <HomePage/>
             <ArraySelectedCity/>
         </Container>

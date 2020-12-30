@@ -51,7 +51,7 @@ export type ForecastResponseDataType = {
     city: {
         id: number,
         name: string,
-        coord:{
+        coord: {
             lat: number,
             lon: number
         },
@@ -65,37 +65,76 @@ export type ForecastResponseDataType = {
 }
 
 export type ForecastListType = {
-    clouds:{
+    clouds: {
         all: number
     },
     dt: number,
     dt_txt: string,
-    main:{
+    main: {
         temp: number,
         temp_min: number,
         temp_max: number,
         pressure: number,
         sea_level: number,
-        grnd_level:number,
+        grnd_level: number,
         humidity: number,
         temp_kf: number
     },
     pop: number,
-    sys:{
+    sys: {
         pod: string
     },
     visibility: number,
-    weather:[
+    weather: [
         {
             id: number,
-            main:  string,
-            description:  string,
-            icon:  string
+            main: string,
+            description: string,
+            icon: string
         }
     ],
-    wind:{
+    wind: {
         speed: number,
         deg: number
     },
 }
+
+// export type WindDirectionType = {
+//     'North-Northeast': string,
+//     'Northeast': string,
+//     'East-Northeast': string,
+//     'East': string,
+//     'Southeast': string,
+//     'South-Southeast': string,
+//     'South': string,
+//     'South-Southwest': string,
+//     'Southwest': string,
+//     'West-Southwest': string,
+//     'West': string,
+//     'West-Northwest': string,
+//     'Northwest': string,
+//     'North-Northwest': string,
+//     'North': string,
+//     'All': string
+//     ' ': string
+// }
+
+export type WindDirectionType =
+    'North-Northeast'
+    | 'Northeast'
+    | 'East-Northeast'
+    | 'East'
+    | 'Southeast'
+    | 'South-Southeast'
+    | 'South'
+    | 'South-Southwest'
+    | 'Southwest'
+    | 'West-Southwest'
+    | 'West'
+    | 'West-Northwest'
+    | 'Northwest'
+    | 'North-Northwest'
+    | 'North'
+    | 'All'
+    | ' '
 
