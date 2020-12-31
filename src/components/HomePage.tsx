@@ -10,6 +10,7 @@ import {
     WeatherResponseDataType,
     WindDirectionType
 } from '../services/types';
+import {addSelectedCityTC} from '../redux/SelectedCityReducer';
 
 
 const useMainPageStyles = makeStyles((theme) => ({
@@ -30,7 +31,7 @@ const useMainPageStyles = makeStyles((theme) => ({
         marginLeft: 80,
     },
     forecastTable: {
-        marginLeft: 150,
+        marginLeft: 50,
         marginRight: 'auto',
     },
     forecastTableItem: {
@@ -63,7 +64,6 @@ export const HomePage: React.FC = () => {
 
     const dispatch = useDispatch();
 
-
     useEffect(() => {
         let windDegree = weatherDataArray.wind?.deg;
         if (windDegree) {
@@ -82,7 +82,6 @@ export const HomePage: React.FC = () => {
 
 
     const filteredForecastData = forecastData.list?.filter((data: ForecastListType) => data.dt_txt.slice(-8) === '12:00:00')
-
 
     const checkDirection = (windDegree: number): WindDirectionType => {
         if (windDegree >= 12 || windDegree <= 33) {
@@ -133,16 +132,15 @@ export const HomePage: React.FC = () => {
         return 'All'
     }
 
-
     let dispatchThunk = () => {
         dispatch(searchInputTC(searchValue))
         dispatch(searchWeaklyForecastTC(searchValue))
+        dispatch(addSelectedCityTC(searchValue))
     }
 
     const searchGeolocation = () => {
         navigator.geolocation.getCurrentPosition(function (position) {
             dispatch(searchWeatherDataGeolocationTC(position.coords.latitude, position.coords.longitude))
-            //  dispatch(searchWeaklyForecastThunk(searchValue))
         });
     }
 
@@ -165,7 +163,7 @@ export const HomePage: React.FC = () => {
                     My Weather API
                 </Grid>
                 <Grid item xs={2}>
-                    <SearchInput searchValue={searchValue} SetSearchValue={setSearchValue} dispatchThunk={dispatchThunk}
+                    <SearchInput searchValue={searchValue} setSearchValue={setSearchValue} dispatchThunk={dispatchThunk}
                                  searchGeolocation={searchGeolocation}/>
                 </Grid>
                 <Grid item xs={4}>

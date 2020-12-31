@@ -1,49 +1,41 @@
-export default 1
+import {AppStateType, InferActionTypes} from './store';
+import {ThunkAction, ThunkDispatch} from 'redux-thunk';
 
+const SET_SELECTED_CITIES = 'SEARCH_CITY_REDUCER/SET_SELECTED_CITIES';
 
-/*
-// import {InitialStateType} from './SearchWeatherReducer';
-// import {ForecastResponseDataType, WeatherResponseDataType} from '../services/types';
-// import {AppStateType, InferActionTypes} from './store';
-// import {ThunkAction, ThunkDispatch} from 'redux-thunk';
-// import {weatherApi} from '../api/api';
-//
-// let initialState = {
-//    selectedCityArray: []
-// }
+let initialState = {
+    selectedCitiesArray: [] as Array<string>
+}
 
+type InitialStateType = typeof initialState;
 
-// export const searchWeatherReducer = (state: InitialStateType = initialState, action: ActionType) => {
-//     switch (action.type) {
-//         case SET_SEARCH_INPUT:
-//             return {...state, dataArray: action.dataArray}
-//
-//
-//         default:
-//             return state
-//     }
-// }
+export const selectedCityReducer = (state: InitialStateType = initialState, action: ActionType) => {
+    switch (action.type) {
+        case SET_SELECTED_CITIES:
+            return {
+                ...state, selectedCitiesArray: [...state.selectedCitiesArray, action.cityName + ' ']
+            }
 
-// type ActionType = InferActionTypes<typeof actions>;
-// type ThunkType = ThunkAction<void, AppStateType, unknown, ActionType>;
+        default:
+            return state
+    }
+}
 
-// const actions = {
-//     setSearchInput: (dataArray: WeatherResponseDataType) => {
-//         return ({type: SET_SEARCH_INPUT, dataArray} as const)
-//     },
-//     setSearchWeaklyForecast: (forecastData: ForecastResponseDataType) => {
-//         debugger
-//         return ({type: SET_SEARCH_WEAKLY_FORECAST, forecastData} as const)
-//     },
-// }
-//
-// export const addSelectedCityThunk = (searchValue: string): ThunkType => async (dispatch: ThunkDispatch<AppStateType, unknown, ActionType>, getState: () => AppStateType) => {
-//     try {
-//         const response = await weatherApi.setSearchCityWeather(searchValue)
-//
-//         dispatch(actions.setSearchInput(response.data))
-//     } catch (e) {
-//
-//     }
-// }
-*/
+type ActionType = InferActionTypes<typeof actions>;
+type ThunkType = ThunkAction<void, AppStateType, unknown, ActionType>;
+
+const actions = {
+    setSelectedCity: (cityName: string) => {
+        return ({type: SET_SELECTED_CITIES, cityName} as const)
+    },
+
+}
+
+export const addSelectedCityTC = (searchValue: string): ThunkType => async (dispatch: ThunkDispatch<AppStateType, unknown, ActionType>, getState: () => AppStateType) => {
+    try {
+        dispatch(actions.setSelectedCity(searchValue))
+    } catch (e) {
+        throw new Error(e)
+    }
+}
+

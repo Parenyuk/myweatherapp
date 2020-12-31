@@ -99,26 +99,6 @@ export type ForecastListType = {
     },
 }
 
-// export type WindDirectionType = {
-//     'North-Northeast': string,
-//     'Northeast': string,
-//     'East-Northeast': string,
-//     'East': string,
-//     'Southeast': string,
-//     'South-Southeast': string,
-//     'South': string,
-//     'South-Southwest': string,
-//     'Southwest': string,
-//     'West-Southwest': string,
-//     'West': string,
-//     'West-Northwest': string,
-//     'Northwest': string,
-//     'North-Northwest': string,
-//     'North': string,
-//     'All': string
-//     ' ': string
-// }
-
 export type WindDirectionType =
     'North-Northeast'
     | 'Northeast'

@@ -7,9 +7,6 @@ const instance = axios.create({
 
 export const weatherApi = {
     setSearchCityWeather(searchValue: string) {
-        debugger
-        let a  =  process.env.REACT_APP_API_KEY;
-
         return instance.get<WeatherResponseDataType>(`weather?q=${searchValue}&appid=${process.env.REACT_APP_API_KEY}&units=metric`)
     },
     setSearchCityWeatherByGeolocation(latitude: number, longitude: number) {
